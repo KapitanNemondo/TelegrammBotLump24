@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../Little_kids"
+		},
+		{
+			"name": "TelegrammBotLump24",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"cmath": "cpp",
+			"cstddef": "cpp"
+		}
+	}
+}
