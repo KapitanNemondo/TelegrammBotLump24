@@ -40,6 +40,7 @@ String color = "#ff0000";  // Цвет по умолчанию
 uint8_t current_bri = 0;
 
 void UpdateFoto();
+void UpdateTMP();
 
 DHT dht_14(DHTPIN, DHT11);
 
@@ -64,31 +65,6 @@ enum DATA {
   BRIGHT
 };
 
-void UpdateTMP() {
-  unsigned long currentMillis = millis();
-  humidity = dht_14.readHumidity();
-  temp = dht_14.readTemperature();
-
-  // Проверка на ошибки чтения
-  if (isnan(humidity) || isnan(temp)) {
-    Serial.println("Ошибка чтения с датчика DHT11!");
-    return;
-  } 
-
-    // Обновление данных на дисплее TM1637
-  if (currentMillis - displayPreviousMillis >= displayInterval) {
-    displayPreviousMillis = currentMillis;
-    display.clear();  // Очистка дисплея перед отображением новых данных
-
-    if (showTemperature) {
-      display.showNumberDec((int)temp);
-    } else {
-      display.showNumberDec((int)humidity);
-    }
-
-    showTemperature = !showTemperature;  // Переключение между показом температуры и влажности
-  }
-};
 
 // ---------------------------------------------- Кодя для дисплея ----------------------------------------------
 
@@ -209,11 +185,8 @@ void loop() {
 
 
   // ---------------------------------------------- Кодя для дисплея ----------------------------------------------
-  //UpdateTMP();
+  UpdateTMP();
   // ---------------------------------------------- Кодя для дисплея ----------------------------------------------
-  //bri = map(analogRead(FOTO), 0, 1023, 0, 255);
-  humidity = dht_14.readHumidity();
-  temp = dht_14.readTemperature();
   UpdateFoto();
 
 }
@@ -285,3 +258,29 @@ void UpdateFoto() {
   }
   
 }
+
+void UpdateTMP() {
+  unsigned long currentMillis = millis();
+  humidity = dht_14.readHumidity();
+  temp = dht_14.readTemperature();
+
+  // Проверка на ошибки чтения
+  if (isnan(humidity) || isnan(temp)) {
+    Serial.println("Ошибка чтения с датчика DHT11!");
+    return;
+  } 
+
+    // Обновление данных на дисплее TM1637
+  if (currentMillis - displayPreviousMillis >= displayInterval) {
+    displayPreviousMillis = currentMillis;
+    display.clear();  // Очистка дисплея перед отображением новых данных
+
+    if (showTemperature) {
+      display.showNumberDec((int)temp);
+    } else {
+      display.showNumberDec((int)humidity);
+    }
+
+    showTemperature = !showTemperature;  // Переключение между показом температуры и влажности
+  }
+};
