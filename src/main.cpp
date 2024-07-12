@@ -184,10 +184,14 @@ void loop() {
   }
 
 
-  // ---------------------------------------------- Кодя для дисплея ----------------------------------------------
-  UpdateTMP();
-  // ---------------------------------------------- Кодя для дисплея ----------------------------------------------
-  UpdateFoto();
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= 10) {
+    previousMillis = currentMillis;
+    // Обновление данных с сенсоров
+    UpdateTMP();
+    UpdateFoto();
+  }
 
 }
 
